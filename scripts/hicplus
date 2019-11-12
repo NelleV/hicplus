@@ -2,6 +2,8 @@
 
 import argparse, sys
 from hicplus import pred_chromosome, train_models, pred_genome
+
+
 def getargs():
     ## Construct an ArgumentParser object for command-line arguments
     parser = argparse.ArgumentParser(description='''Train CNN model with Hi-C data and make predictions for low resolution HiC data with the model.
@@ -37,8 +39,6 @@ def getargs():
         i.add_argument('-o', '--outmodel',
                          help = 'output model name. default = model_epochnumber.model',
                          type = str, default = 'model')
-        i.add_argument("--input-format", default="hic", type=str,
-                       help="Format of the input file. Can be hic or hicpro")
     for i in subs[1:]:
         i.add_argument('-i', '--inputfile',
                          help = 'path to a .hic file.', type = str)
@@ -50,6 +50,8 @@ def getargs():
         i.add_argument('-c','--chrN', nargs=2, metavar=('chrN1','chrN2'),
                          type=int,required=True, help='chromosome number')
 
+    i.add_argument("--input-format", default="hic", type=str,
+                   help="Format of the input file. Can be hic or hicpro")
     ## Parse the command-line arguments
     commands = sys.argv[1:]
     if ((not commands) or ((commands[0] in ['train', 'pred_chromosome'])

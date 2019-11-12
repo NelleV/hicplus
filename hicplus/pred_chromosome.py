@@ -84,7 +84,7 @@ def prediction(M,N,inmodel):
 #             continue
 #
 
-def chr_pred(hicfile, chrN1, chrN2, binsize, inmodel):
+def chr_pred(hicfile, chrN1, chrN2, binsize, inmodel, format="hic"):
     Step = 20000000
     laststart1 =  chrs_length[chrN1]//Step*Step + Step
     lastend1 = chrs_length[chrN1]
@@ -119,7 +119,9 @@ def main(args):
     binsize = args.binsize
     inmodel = args.model
     hicfile = args.inputfile
-    Mat = chr_pred(hicfile,chrN1,chrN2,binsize,inmodel).toarray()
+    format = args.input_format
+
+    Mat = chr_pred(hicfile,chrN1,chrN2,binsize,inmodel, format=format).toarray()
     print(Mat.shape)
     np.save('chr%s.chr%s.pred.npy'%(chrN1,chrN2), Mat)
         #print(enhM.shape)

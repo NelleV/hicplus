@@ -32,7 +32,9 @@ def matrix_extract(chrN1, binsize, hicfile, format="hic"):
     #N = M.shape[1]
     return(M)
 
-def frag_matrix_extract(hicfile, chrN1, chrN2, binsize, start1, start2, lastend1, lastend2, shiftsize,Step):
+
+def frag_matrix_extract(hicfile, chrN1, chrN2, binsize, start1, start2,
+                        lastend1, lastend2, shiftsize, Step, format="hic"):
 
     end1=start1+Step + shiftsize
     end2=start2+Step + shiftsize
@@ -40,21 +42,27 @@ def frag_matrix_extract(hicfile, chrN1, chrN2, binsize, start1, start2, lastend1
     #    end1 = lastend1
     #if end2 > lastend2:
     #    end2 = lastend2
-    result = straw.straw('NONE', hicfile, str(chrN1),str(chrN2),'BP',binsize)
-    row = [r//binsize for r in result[0]]
-    col = [c//binsize for c in result[1]]
-    value = result[2]
+    if format == "hic":
+        result = straw.straw('NONE', hicfile, str(chrN1),str(chrN2),'BP',binsize)
+        row = [r//binsize for r in result[0]]
+        col = [c//binsize for c in result[1]]
+        value = result[2]
 
-    N = max(chrs_length[chrN2]//binsize+Step//binsize, chrs_length[chrN1]//binsize+Step// binsize) +1
-    #N = max(max(row)+1, max(col) + 1)
-    #print(N)
-    M = csr_matrix((value, (row,col)), shape=(N,N))
-    M = csr_matrix.todense(M)
-    rowix = range(start1//binsize, end1//binsize+1)
-    colix = range(start2//binsize, end2//binsize+1)
-    #print(rowix,colix)
-    M = M[np.ix_(rowix, colix)]
-    N = M.shape[1]
+        N = max(chrs_length[chrN2]//binsize+Step//binsize, chrs_length[chrN1]//binsize+Step// binsize) +1
+        #N = max(max(row)+1, max(col) + 1)
+        #print(N)
+        M = csr_matrix((value, (row,col)), shape=(N,N))
+        M = csr_matrix.todense(M)
+        rowix = range(start1//binsize, end1//binsize+1)
+        colix = range(start2//binsize, end2//binsize+1)
+        #print(rowix,colix)
+        M = M[np.ix_(rowix, colix)]
+        N = M.shape[1]
+    else:
+        M = iced.io.load_counts(hicfile)
+        M = M.todense()
+        N = M.shape[1]
+
     return(M,N)
 
 def divide(HiCmatrix):
