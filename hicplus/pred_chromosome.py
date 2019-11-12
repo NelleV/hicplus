@@ -99,7 +99,9 @@ def chr_pred(hicfile, chrN1, chrN2, binsize, inmodel, format="hic"):
         for start2 in range(1, laststart, Step):
             #if chrN1 == chrN2 and start2 < start1:
             #    continue
-            M,N = utils.frag_matrix_extract(hicfile, chrN1, chrN2, binsize, start1, start2, lastend1, lastend2, shiftsize, Step)
+            M,N = utils.frag_matrix_extract(hicfile, chrN1, chrN2, binsize,
+                                            start1, start2, lastend1,
+                                            lastend2, shiftsize, Step, format=format)
             #print(N)
 
             #low_resolution_samples, index = divide(M)
