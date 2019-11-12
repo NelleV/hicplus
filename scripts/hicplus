@@ -56,7 +56,8 @@ def getargs():
         and len(commands) == 1)):
         commands.append('-h')
     args = parser.parse_args(commands)
-    if args.input_format not in ["hic", "hicpro"]
+    if args.input_format not in ["hic", "hicpro"]:
+        raise ValueError("Unknown input format")
     return args, commands
 
 

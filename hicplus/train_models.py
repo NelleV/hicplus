@@ -20,7 +20,8 @@ chrs_length = [249250621,243199373,198022430,191154276,180915260,171115067,15913
 
 def main(args):
 
-    highres = utils.matrix_extract(args.chromosome, 10000, args.inputfile)
+    highres = utils.matrix_extract(args.chromosome, 10000, args.inputfile,
+                                   format=args.input_format)
 
     print('dividing, filtering and downsampling files...')
 
