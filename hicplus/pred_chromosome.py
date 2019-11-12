@@ -116,6 +116,7 @@ def chr_pred(hicfile, chrN1, chrN2, binsize, inmodel, format="hic"):
     return(chrh)
     #chrh.toarray()
 
+
 def main(args):
     chrN1, chrN2 = args.chrN
     binsize = args.binsize
@@ -125,7 +126,11 @@ def main(args):
 
     Mat = chr_pred(hicfile,chrN1,chrN2,binsize,inmodel, format=format).toarray()
     print(Mat.shape)
-    np.save('chr%s.chr%s.pred.npy'%(chrN1,chrN2), Mat)
+
+    if args.output_file:
+        io.write_counts(args.output_file, Mat)
+    else:
+        np.save('chr%s.chr%s.pred.npy'%(chrN1,chrN2), Mat)
         #print(enhM.shape)
 if __name__ == '__main__':
     main()
