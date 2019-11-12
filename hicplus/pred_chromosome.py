@@ -13,6 +13,7 @@ from hicplus import utils
 from time import gmtime, strftime
 from datetime import datetime
 import argparse
+import iced
 
 startTime = datetime.now()
 
@@ -128,7 +129,7 @@ def main(args):
     print(Mat.shape)
 
     if args.output_file:
-        io.write_counts(args.output_file, Mat)
+        iced.io.write_counts(args.output_file, Mat)
     else:
         np.save('chr%s.chr%s.pred.npy'%(chrN1,chrN2), Mat)
         #print(enhM.shape)
