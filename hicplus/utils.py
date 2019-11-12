@@ -1,24 +1,27 @@
 import numpy as np
 #import matplotlib.pyplot as plt
-import os,struct
 import random
 import straw
 from scipy.sparse import csr_matrix, coo_matrix, vstack, hstack
 from scipy import sparse
-import numpy as np
+import iced
 
 chrs_length = [0,249250621,243199373,198022430,191154276,180915260,171115067,159138663,146364022,141213431,135534747,135006516,133851895,115169878,107349540,102531392,90354753,81195210,78077248,59128983,63025520,48129895,51304566]
 
-def matrix_extract(chrN1, binsize, hicfile):
+def matrix_extract(chrN1, binsize, hicfile, format="hic"):
 
-    result = straw.straw('NONE', hicfile, str(chrN1),str(chrN1),'BP',binsize)
-    row = [r//binsize for r in result[0]]
-    col = [c//binsize for c in result[1]]
-    value = result[2]
-    N = max(max(row)+1, max(col) + 1)
-    #print(N)
-    M = csr_matrix((value, (row,col)), shape=(N,N))
-    M = csr_matrix.todense(M)
+    if format == "hic":
+        result = straw.straw('NONE', hicfile, str(chrN1),str(chrN1),'BP',binsize)
+        row = [r//binsize for r in result[0]]
+        col = [c//binsize for c in result[1]]
+        value = result[2]
+        N = max(max(row)+1, max(col) + 1)
+        M = csr_matrix((value, (row, col)), shape=(N, N))
+        M = csr_matrix.todense(M)
+    elif format == "hicpro":
+        M = iced.io.load_counts(hicfile)
+        M = M.todense()
+
     M = np.array(M)
     x, y = np.where(M!=0)
     M[y, x] = M[x, y]
